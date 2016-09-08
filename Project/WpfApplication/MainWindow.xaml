@@ -1,0 +1,57 @@
+﻿<Controls:MetroWindow x:Class="WpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:WpfApplication"
+        mc:Ignorable="d"
+        Icon="deer.ico"
+        ShowIconOnTitleBar="False"
+        xmlns:c="clr-namespace:VVMConnection;assembly=VVMConnection"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        Title="採用受付" Height="510.017" Width="540.183">
+    <Controls:MetroWindow.DataContext>
+        <local:MainWindowVM/>
+    </Controls:MetroWindow.DataContext>
+    
+    <c:Connection.Methods>
+        <c:MethodCollection>
+            <c:Method Name ="ShowSaveFileDialog" Invoker="AskSaveFilePath"/>
+            <c:Method Name ="ShowOpenFileDialog" Invoker="AskOpenFilePath"/>
+
+
+            <c:Method Name ="Show" Invoker="NotifyError">
+                <c:Method.Target>
+                    <c:MessageBox Button="OK" Caption="Error"/>
+                </c:Method.Target>
+            </c:Method>
+
+        </c:MethodCollection>
+    </c:Connection.Methods>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="ファイル">
+                <MenuItem Header="新規作成" Click="{c:Event CreateNewData}"/>
+                <MenuItem Header="開く" Click="{c:Event OpenFile}"/>
+                <MenuItem Header="保存" Click="{c:Event OpenSave}"/>
+            </MenuItem>
+            <MenuItem Header="ヘルプ">
+                <MenuItem Header="バージョン" Click="ShowVersion"/>
+            </MenuItem>
+        </Menu>
+        <TabControl Grid.Row="1" Margin="0,16,0,0" Controls:TabControlHelper.IsUnderlined="True">
+            <TabItem Header="登録" Width="100">
+                <local:EntryControl Width="auto" Height="auto" Margin="10,0,0,0" DataContext="{Binding EntryControlVM }"/>
+            </TabItem>
+            <TabItem Header="一覧" Width="100">
+                <local:ViewControl Width="auto" Height="auto" Margin="10,0" DataContext="{Binding ViewControlVM }"/>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>
