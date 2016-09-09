@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Linq;
 using FontAwesome.WPF;
 using Codeer.Friendly.Windows.Grasp;
+using System;
 
 namespace Driver.Window
 {
@@ -17,6 +18,20 @@ namespace Driver.Window
         {
             public MyGrid(AppVar core) : base(core) { }
             public int RowCount => this.Dynamic().Items.Count;
+            public void EmulateChangeDate(int itemIndex, int col, DateTime date)
+            {
+                EmulateChangeCurrentCell(itemIndex, col);
+                App.Type(GetType()).EmulateChangeDate(this, date);
+            }
+            static void EmulateChangeDate(DataGrid grid, DateTime date)
+            {
+                EventHandler<DataGridCellEditEndingEventArgs> hanlder = (s, e) =>
+                    e.EditingElement.VisualTree().ByType<DatePicker>().Single().SelectedDate = date;
+                grid.CellEditEnding += hanlder;
+                grid.BeginEdit();
+                grid.CommitEdit(DataGridEditingUnit.Row, true);
+                grid.CellEditEnding -= hanlder;
+            }
         }
 
         public WPFTextBox TextBox_名前 => new WPFTextBox(_core.LogicalTree().ByBinding("NameSearch.Value").Single());

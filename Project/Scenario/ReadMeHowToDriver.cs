@@ -36,7 +36,14 @@ namespace Scenario
             var view = _app.採用受付.Select_一覧();
             view.Button_検索.EmulateClick();
             Assert.AreEqual(1, view.DataGrid.RowCount);
-            view.DataGrid.GetRow(0).EmulateChangeSelected(true);
+            view.DataGrid.EmulateChangeCurrentCell(0, 0);
+
+            view.DataGrid.EmulateChangeCellText(0, 0, "xxx");
+            view.DataGrid.EmulateChangeCellText(0, 1, "yyy");
+            view.DataGrid.EmulateChangeCellComboSelect(0, 2, 3);
+            view.DataGrid.EmulateChangeCellComboSelect(0, 3, 1);
+            view.DataGrid.EmulateChangeDate(0, 4, new DateTime(1988, 8, 8));
+
             view.Button_削除_Click().Button_いいえ_Click();
             view.Button_削除_Click().Button_はい_Click();
             Assert.AreEqual(0, view.DataGrid.RowCount);
