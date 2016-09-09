@@ -1,11 +1,7 @@
 ﻿using Codeer.Friendly;
-using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows.Grasp;
-using Codeer.Friendly.Windows.NativeStandardControls;
 using RM.Friendly.WPFStandardControls;
-using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 
 namespace Driver.Window
 {
@@ -26,13 +22,12 @@ namespace Driver.Window
             _core = core;
         }
 
-        public NativeMessageBox Button_登録_Click()
+        public MessageBoxDriver Button_登録_Click()
         {
-            var current = WindowControl.FromZTop(Button_登録.App);
             var async = new Async();
             Button_登録.EmulateClick(async);
-            var msg = current.WaitForNextModal(async);
-            return msg == null ? null : new NativeMessageBox(msg);
+            var msg = WindowControl.WaitForIdentifyFromWindowText(Button_登録.App, "Error", async);
+            return msg == null ? null : new MessageBoxDriver(msg);
         }
     }
 }

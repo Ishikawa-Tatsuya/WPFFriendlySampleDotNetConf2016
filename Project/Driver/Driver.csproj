@@ -83,6 +83,10 @@
   <ItemGroup>
     <Compile Include="AppDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Window\MessageBoxDriver.cs" />
+    <Compile Include="Window\NativeMethods.cs" />
+    <Compile Include="Window\OpenFileDialogDriver.cs" />
+    <Compile Include="Window\SaveFileDialogDriver.cs" />
     <Compile Include="Window\Version_Driver.cs" />
     <Compile Include="Window\一覧_Driver.cs" />
     <Compile Include="Window\採用受付_Driver.cs" />
