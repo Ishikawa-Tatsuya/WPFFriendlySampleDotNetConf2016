@@ -1,7 +1,10 @@
-﻿using Codeer.Friendly.Windows;
+﻿using Codeer.Friendly.Dynamic;
+using Codeer.Friendly.Windows;
 using System;
 using System.Diagnostics;
 using System.IO;
+using Driver.Window;
+using System.Windows;
 
 namespace Driver
 {
@@ -10,6 +13,8 @@ namespace Driver
         public Process Process { get; private set; }
         WindowsAppFriend _app;
 
+        public 採用受付_Driver 採用受付 => new 採用受付_Driver(_app.Type<Application>().Current.MainWindow);
+       
         public AppDriver()
         {
             if (Process != null)
@@ -21,6 +26,7 @@ namespace Driver
             var info = new ProcessStartInfo(pathExe) { WorkingDirectory = dir };
             Process = Process.Start(pathExe);
             _app = new WindowsAppFriend(Process);
+            WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
         }
 
         public void Dispose()

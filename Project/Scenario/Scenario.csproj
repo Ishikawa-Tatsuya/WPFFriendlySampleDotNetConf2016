@@ -47,6 +47,14 @@
       <HintPath>packages\Codeer.Friendly.Windows.2.6.0\lib\net20\Codeer.Friendly.Windows.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Codeer.Friendly.Windows.Grasp, Version=2.5.1.0, Culture=neutral, PublicKeyToken=92809a28945fb91d, processorArchitecture=MSIL">
+      <HintPath>packages\Codeer.Friendly.Windows.Grasp.2.5.1\lib\net20\Codeer.Friendly.Windows.Grasp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Codeer.Friendly.Windows.NativeStandardControls, Version=2.2.3.0, Culture=neutral, PublicKeyToken=90759bf0c8b8639e, processorArchitecture=MSIL">
+      <HintPath>packages\Codeer.Friendly.Windows.NativeStandardControls.2.2.3\lib\net20\Codeer.Friendly.Windows.NativeStandardControls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -63,6 +71,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
