@@ -25,5 +25,8 @@ namespace WpfApplication
             var dlg = new OpenFileDialog();
             return (dlg.ShowDialog() == true) ? dlg.FileName : string.Empty;
         }
+
+        string Func(int value)
+            => value.ToString();
     }
 }

@@ -5,27 +5,27 @@ using System.Windows.Controls;
 
 namespace Driver.Window
 {
-    public class 採用受付_Driver
+    public class MainWindow_Driver
     {
         AppVar _core;
         WPFTabControl Tab => new WPFTabControl(_core.LogicalTree().ByType<TabControl>().Single());
         WPFMenuBase Menu => new WPFMenuBase(_core.LogicalTree().ByType<Menu>().Single());
 
-        public 採用受付_Driver(AppVar core)
+        public MainWindow_Driver(AppVar core)
         {
             _core = core;
         }
 
-        public 登録_Driver Select_登録()
+        public EntryWindow_Driver Select_登録()
         {
             Tab.EmulateChangeSelectedIndex(0);
-            return new 登録_Driver(Tab.VisualTree().ByType("WpfApplication.EntryControl").Single());
+            return new EntryWindow_Driver(Tab.VisualTree().ByType("WpfApplication.EntryControl").Single());
         }
 
-        public 一覧_Driver Select_一覧()
+        public ViewWindow_Driver Select_一覧()
         {
             Tab.EmulateChangeSelectedIndex(1);
-            return new 一覧_Driver(Tab.VisualTree().ByType("WpfApplication.ViewControl").Single());
+            return new ViewWindow_Driver(Tab.VisualTree().ByType("WpfApplication.ViewControl").Single());
         }
 
         public Version_Driver Menu_ヘルプ_バージョン_Click()

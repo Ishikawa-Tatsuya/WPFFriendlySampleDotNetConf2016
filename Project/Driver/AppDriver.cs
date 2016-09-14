@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using Driver.Window;
 using System.Windows;
+using RM.Friendly.WPFStandardControls;
 
 namespace Driver
 {
@@ -13,7 +14,7 @@ namespace Driver
         public Process Process { get; private set; }
         WindowsAppFriend _app;
 
-        public 採用受付_Driver 採用受付 => new 採用受付_Driver(_app.Type<Application>().Current.MainWindow);
+        public MainWindow_Driver 採用受付 => new MainWindow_Driver(_app.Type<Application>().Current.MainWindow);
        
         public AppDriver()
         {
@@ -26,6 +27,7 @@ namespace Driver
             var info = new ProcessStartInfo(pathExe) { WorkingDirectory = dir };
             Process = Process.Start(pathExe);
             _app = new WindowsAppFriend(Process);
+            WPFStandardControls_4.Injection(_app);
             WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
         }
 

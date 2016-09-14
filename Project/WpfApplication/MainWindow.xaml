@@ -19,14 +19,11 @@
         <c:MethodCollection>
             <c:Method Name ="ShowSaveFileDialog" Invoker="AskSaveFilePath"/>
             <c:Method Name ="ShowOpenFileDialog" Invoker="AskOpenFilePath"/>
-
-
-            <c:Method Name ="Show" Invoker="NotifyError">
+            <c:Method Name ="Show" Invoker="NotifyInfo">
                 <c:Method.Target>
-                    <c:MessageBox Button="OK" Caption="Error"/>
+                    <c:MessageBox Button="OK" Caption="Info"/>
                 </c:Method.Target>
             </c:Method>
-
         </c:MethodCollection>
     </c:Connection.Methods>
     
@@ -43,6 +40,9 @@
             </MenuItem>
             <MenuItem Header="ヘルプ">
                 <MenuItem Header="バージョン" Click="ShowVersion"/>
+            </MenuItem>
+            <MenuItem Header="通信">
+                <MenuItem Header="送信" Click="{c:Event SendData}"/>
             </MenuItem>
         </Menu>
         <TabControl Grid.Row="1" Margin="0,16,0,0" Controls:TabControlHelper.IsUnderlined="True">

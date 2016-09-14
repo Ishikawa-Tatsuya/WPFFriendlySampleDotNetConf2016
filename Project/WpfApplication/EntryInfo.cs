@@ -2,6 +2,7 @@
 
 namespace WpfApplication
 {
+    [Serializable]
     public class EntryInfo
     {
         public string Name { get; set; }

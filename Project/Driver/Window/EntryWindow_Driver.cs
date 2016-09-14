@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace Driver.Window
 {
-    public class 登録_Driver
+    public class EntryWindow_Driver
     {
         AppVar _core;
 
@@ -17,7 +17,7 @@ namespace Driver.Window
         public WPFCalendar Calendar_生年月日 => new WPFCalendar(_core.LogicalTree().ByBinding("BirthDay.Value").Single());
         WPFButtonBase Button_登録 => new WPFButtonBase(_core.LogicalTree().ByType<Button>().Single());
 
-        public 登録_Driver(AppVar core)
+        public EntryWindow_Driver(AppVar core)
         {
             _core = core;
         }

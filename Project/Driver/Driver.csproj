@@ -88,9 +88,9 @@
     <Compile Include="Window\OpenFileDialogDriver.cs" />
     <Compile Include="Window\SaveFileDialogDriver.cs" />
     <Compile Include="Window\Version_Driver.cs" />
-    <Compile Include="Window\一覧_Driver.cs" />
-    <Compile Include="Window\採用受付_Driver.cs" />
-    <Compile Include="Window\登録_Driver.cs" />
+    <Compile Include="Window\ViewWindow_Driver.cs" />
+    <Compile Include="Window\MainWindow_Driver.cs" />
+    <Compile Include="Window\EntryWindow_Driver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

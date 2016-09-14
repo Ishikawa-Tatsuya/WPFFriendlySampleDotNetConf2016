@@ -10,9 +10,11 @@ using System;
 
 namespace Driver.Window
 {
-    public class 一覧_Driver
+    public class ViewWindow_Driver
     {
         AppVar _core;
+
+        public dynamic Core => _core.Dynamic();
 
         public class MyGrid : WPFDataGrid
         {
@@ -40,7 +42,7 @@ namespace Driver.Window
         public MyGrid DataGrid => new MyGrid(_core.LogicalTree().ByType<DataGrid>().Single());
         WPFButtonBase Button_削除 => new WPFButtonBase(_core.App.Type(GetType()).FindButton(_core, FontAwesomeIcon.Eraser));
 
-        public 一覧_Driver(AppVar core)
+        public ViewWindow_Driver(AppVar core)
         {
             _core = core;
         }

@@ -2,18 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace WpfApplication
 {
     public class MainWindowVM
     {
+        ICommunicator _communicator = new RealCommunicator();
         List<EntryInfo> _infos;
         public EntryControlVM EntryControlVM { get; }
         public ViewControlVM ViewControlVM { get; }
 
         public Func<string> AskSaveFilePath { get; set; }
         public Func<string> AskOpenFilePath { get; set; }
-        public Func<string, bool?> NotifyError { get; set; }
+        public Func<string, bool?> NotifyInfo { get; set; }
 
         public MainWindowVM()
         {
@@ -40,7 +42,7 @@ namespace WpfApplication
             }
             catch (Exception e)
             {
-                NotifyError(e.Message);
+                NotifyInfo(e.Message);
             }
             ViewControlVM.Search();
         }
@@ -55,8 +57,24 @@ namespace WpfApplication
             }
             catch (Exception e)
             {
-                NotifyError(e.Message);
+                NotifyInfo(e.Message);
             }
         }
+
+        public void SendData()
+        {
+            var isSuccess = _communicator.SendData(string.Join(Environment.NewLine, _infos.Select(e => e.Name)));
+            NotifyInfo(isSuccess ? "Success" : "Error");
+        }
+    }
+
+    public interface ICommunicator
+    {
+        bool SendData(string data);
+    }
+
+    class RealCommunicator : ICommunicator
+    {
+        public bool SendData(string data) => false;
     }
 }
