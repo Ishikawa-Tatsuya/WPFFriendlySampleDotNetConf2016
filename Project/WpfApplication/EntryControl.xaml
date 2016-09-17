@@ -18,7 +18,7 @@
     </c:Connection.Methods>
 
     <Canvas>
-        <TextBox Height="23" Canvas.Left="90" TextWrapping="Wrap" Text="{Binding Name.Value}" Canvas.Top="13" Width="179"/>
+        <TextBox x:Name="_textBoxName" Height="23" Canvas.Left="90" TextWrapping="Wrap" Text="{Binding Name.Value}" Canvas.Top="13" Width="179"/>
         <TextBox Height="23" Canvas.Left="90" TextWrapping="Wrap" Text="{Binding Mail.Value}" Canvas.Top="44" Width="179"/>
         <ComboBox Canvas.Left="90" Canvas.Top="75" Width="179" SelectedValue="{Binding Language.Value}" ItemsSource="{Binding Source={x:Static local:Candidates.Language}}"/>
         <RadioButton Content="男性" Canvas.Left="90" Canvas.Top="110" IsChecked="{Binding IsMan.Value}"/>

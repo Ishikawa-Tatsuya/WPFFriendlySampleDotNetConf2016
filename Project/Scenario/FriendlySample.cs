@@ -32,7 +32,7 @@ namespace Scenario
         }
 
         [TestMethod]
-        public void Test()
+        public void Friendlyの基本機能()
         {
             var main = _app.Type<Application>().Current.MainWindow;
             main.Title = "xxx";
@@ -43,18 +43,33 @@ namespace Scenario
             string result = main.Func(5);
             Assert.AreEqual("5", result);
 
+            //データ書き換えたり
+            var infos = main.DataContext._infos;
+            infos.Clear();
+            infos.AddRange(
+                new[] {
+                    new EntryInfo() { Name = "石川", Mail = "aaa@bbb.com", Language = "C#", IsMan = true, BirthDay = new DateTime(1977, 1, 7) }
+                });
+
             //DLLインジェクション
             WindowsAppExpander.LoadAssembly(_app, GetType().Assembly);
-            var tab = _app.Type(GetType()).FindTab(main);
-            tab.Background = _app.Type<Brushes>().Red;
+
+            //メソッド呼び出し
+            _app.Type(GetType()).ChangeTabColor(main);
 
             //モックも利用できます。
-            main.DataContext._communicator = _app.Type<MockCommunicator>()();
+            var mock = _app.Type<MockCommunicator>()();
+            main.DataContext._communicator = mock;
+            
+            //一旦手動で通信処理を実行
 
-            //基本部分のデモなんで、ここでは手動で操作します。
-
-            string data = main.DataContext._communicator.Data;
+            string data = mock.Data;
             Assert.AreEqual("石川", data);
+        }
+
+        static void ChangeTabColor(Window main)
+        {
+            FindTab(main).Background = Brushes.Red;
         }
 
         static TabControl FindTab(FrameworkElement element)
@@ -72,6 +87,7 @@ namespace Scenario
         class MockCommunicator : ICommunicator
         {
             public string Data { get; set; }
+
             public bool SendData(string data)
             {
                 Data = data;

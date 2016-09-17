@@ -5,18 +5,20 @@ namespace Driver.Window
 {
     public class MessageBoxDriver
     {
-        public NativeMessageBox Core { get; }
+        NativeMessageBox _core;
+
+        public string Message => _core.Message;
 
         public MessageBoxDriver(WindowControl core)
         {
-            Core = new NativeMessageBox(core);
+            _core = new NativeMessageBox(core);
         }
 
         public void Button_OK_Click()
-            => Core.EmulateButtonClick("OK");
+            => _core.EmulateButtonClick("OK");
         public void Button_はい_Click()
-            => Core.EmulateButtonClick("はい(&Y)");
+            => _core.EmulateButtonClick("はい(&Y)");
         public void Button_いいえ_Click()
-            => Core.EmulateButtonClick("いいえ(&N)");
+            => _core.EmulateButtonClick("いいえ(&N)");
     }
 }

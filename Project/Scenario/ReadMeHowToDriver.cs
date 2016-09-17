@@ -3,22 +3,10 @@ using Driver;
 using System;
 using System.Collections.Generic;
 using WpfApplication;
+using System.Linq;
 
 namespace Scenario
 {
-    //図
-        //APPDriver
-            //折角のアプリケーションレベルでやるテストなんで、外部仕様と直通していることが良く見えるようにしましょう。
-
-        //WPFStandardControlsってのがあって・・・
-            //コントロールの操作
-            //バインディングからの取得
-
-        //でも結局、完全にラップ仕切るのは無理なんですね。
-        //それにそれって、普通だし。上手くいかないし。
-        //だから、Friendlyの通常のプログラムくらい自由にできる特性を活かして自由にやってちょうだい。
-
-
     [TestClass]
     public class ReadMeHowToDriver
     {
@@ -37,32 +25,52 @@ namespace Scenario
         }
 
         [TestMethod]
-        public void Sample()
+        public void ドライバ利用サンプル()
         {
+            //登録
             var entry = _app.採用受付.Select_登録();
             entry.TextBox_名前.EmulateChangeText("石川");
             entry.TextBox_メールアドレス.EmulateChangeText("xxx@bbb");
             entry.CombBox_得意な言語.EmulateChangeSelectedIndex(1);
             entry.CheckBox_男性.EmulateCheck(true);
-            entry.Button_登録_Click().Button_OK_Click();
+
+            //中途半端な入力をしたのでメッセージが出る
+            var msg = entry.Button_登録_Click();
+            //閉じる
+            msg.Button_OK_Click();
+            
+            //誕生日を入力して
             entry.Calendar_生年月日.EmulateChangeDate(new DateTime(1977, 1, 7));
+
+            //再び登録
             entry.Button_登録_Click();
 
-            var view = _app.採用受付.Select_一覧();
-            view.Button_検索.EmulateClick();
-            Assert.AreEqual(1, view.DataGrid.RowCount);
-            view.DataGrid.EmulateChangeCurrentCell(0, 0);
 
+            //一覧画面を開いて
+            var view = _app.採用受付.Select_一覧();
+            //行は一行である
+            Assert.AreEqual(1, view.DataGrid.RowCount);
+
+            //データを変更
             view.DataGrid.EmulateChangeCellText(0, 0, "xxx");
             view.DataGrid.EmulateChangeCellText(0, 1, "yyy");
             view.DataGrid.EmulateChangeCellComboSelect(0, 2, 3);
             view.DataGrid.EmulateChangeCellComboSelect(0, 3, 1);
             view.DataGrid.EmulateChangeDate(0, 4, new DateTime(1988, 8, 8));
 
-            view.Button_削除_Click().Button_いいえ_Click();
-            view.Button_削除_Click().Button_はい_Click();
+            //一行目を選択して
+            view.DataGrid.EmulateChangeCurrentCell(0, 0);
+
+            //削除をクリック
+            msg = view.Button_削除_Click();
+
+            //確認メッセージで「はい」を選択
+            msg.Button_はい_Click();
+
+            //行数は0になる
             Assert.AreEqual(0, view.DataGrid.RowCount);
 
+            //その他画面も開いてみる
             var version = _app.採用受付.Menu_ヘルプ_バージョン_Click();
             version.Button_閉じる.EmulateClick();
 
@@ -75,7 +83,7 @@ namespace Scenario
             saveOpen.Button_キャンセル.EmulateClick();
         }
 
-        static readonly EntryInfo[] testData = new[]
+        static readonly EntryInfo[] TestData = new[]
         {
             new EntryInfo(){Name = "大平 夏希", Mail = "oohira_natsuki@example.com", Language = "C#", IsMan = false, BirthDay = DateTime.Parse("1969/1/8")},
             new EntryInfo(){Name = "横田 れいな", Mail = "yokota_reina@example.com", Language = "Java", IsMan = false, BirthDay = DateTime.Parse("1960/8/17")},
@@ -131,10 +139,11 @@ namespace Scenario
         static readonly List<string> Languages = new List<string>(new[] { "C", "C++", "C#", "Java", "JavaScript", "Ruby" });
 
         [TestMethod]
-        public void InputAll()
+        public void 検索のテスト()
         {
+            //データ登録
             var entry = _app.採用受付.Select_登録();
-            foreach (var data in testData)
+            foreach (var data in TestData)
             {
                 entry.TextBox_名前.EmulateChangeText(data.Name);
                 entry.TextBox_メールアドレス.EmulateChangeText(data.Mail);
@@ -147,24 +156,59 @@ namespace Scenario
 
             var view = _app.採用受付.Select_一覧();
 
-            while(0 < view.DataGrid.RowCount)
-            {
-                view.DataGrid.EmulateChangeCurrentCell(0, 0);
-                view.Button_削除_Click().Button_はい_Click();
-            }
+            view.CombBox_得意言語.EmulateChangeSelectedIndex(Languages.IndexOf("JavaScript") + 1);
+            view.Button_検索.EmulateClick();
+
+            int count = view.DataGrid.RowCount;
+            Assert.AreEqual(9, count);
+            var row = 0;
+            Assert.AreEqual("益岡 ケンイチ", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("朝倉 れいな", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("小川 瞳", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("矢口 徹", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("坂本 光博", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("田口 真奈美", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("北島 誠一", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("砂川 和之", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("藤野 芽以", view.DataGrid.GetCellText(row++, 0));
+        }
+        
+        [TestMethod]
+        public void 登録を高速化()
+        {
+            //データ挿入
+            _app.採用受付.データ挿入(TestData);
+
+            var view = _app.採用受付.Select_一覧();
+
+            view.CombBox_得意言語.EmulateChangeSelectedIndex(Languages.IndexOf("JavaScript") + 1);
+            view.Button_検索.EmulateClick();
+
+            int count = view.DataGrid.RowCount;
+            Assert.AreEqual(9, count);
+            var row = 0;
+            Assert.AreEqual("益岡 ケンイチ", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("朝倉 れいな", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("小川 瞳", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("矢口 徹", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("坂本 光博", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("田口 真奈美", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("北島 誠一", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("砂川 和之", view.DataGrid.GetCellText(row++, 0));
+            Assert.AreEqual("藤野 芽以", view.DataGrid.GetCellText(row++, 0));
         }
 
         [TestMethod]
-        public void DirectInput()
+        public void 通信テスト()
         {
-            var view = _app.採用受付.Select_一覧();
-            
-            var vm = view.Core.DataContext;
-            vm._infos.Clear();
-            vm._infos.AddRange(testData);
+            _app.採用受付.データ挿入(TestData);
+            var receiver = _app.採用受付.通信モック利用();
 
-            view.Button_検索.EmulateClick();
+            var msg = _app.採用受付.Menu_送信_Click();
+            Assert.AreEqual("Success", msg.Message);
+            msg.Button_OK_Click();
+
+            Assert.AreEqual(string.Join(Environment.NewLine, TestData.Select(e => e.Name)), receiver.Data);
         }
-        
     }
 }

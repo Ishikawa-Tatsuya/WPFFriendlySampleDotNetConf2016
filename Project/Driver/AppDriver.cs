@@ -14,7 +14,7 @@ namespace Driver
         public Process Process { get; private set; }
         WindowsAppFriend _app;
 
-        public MainWindow_Driver 採用受付 => new MainWindow_Driver(_app.Type<Application>().Current.MainWindow);
+        public 採用受付_Driver 採用受付 => new 採用受付_Driver(_app.Type<Application>().Current.MainWindow);
        
         public AppDriver()
         {

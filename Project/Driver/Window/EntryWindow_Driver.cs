@@ -1,15 +1,16 @@
 ﻿using Codeer.Friendly;
+using Codeer.Friendly.Dynamic;
 using Codeer.Friendly.Windows.Grasp;
 using RM.Friendly.WPFStandardControls;
 using System.Windows.Controls;
 
 namespace Driver.Window
 {
-    public class EntryWindow_Driver
+    public class 登録_Driver
     {
         AppVar _core;
 
-        public WPFTextBox TextBox_名前 => new WPFTextBox(_core.LogicalTree().ByBinding("Name.Value").Single());
+        public WPFTextBox TextBox_名前 => new WPFTextBox(_core.Dynamic()._textBoxName);
         public WPFTextBox TextBox_メールアドレス => new WPFTextBox(_core.LogicalTree().ByBinding("Mail.Value").Single());
         public WPFComboBox CombBox_得意な言語 => new WPFComboBox(_core.LogicalTree().ByBinding("Language.Value").Single());
         public WPFToggleButton CheckBox_男性 => new WPFToggleButton(_core.LogicalTree().ByBinding("IsMan.Value").Single());
@@ -17,7 +18,7 @@ namespace Driver.Window
         public WPFCalendar Calendar_生年月日 => new WPFCalendar(_core.LogicalTree().ByBinding("BirthDay.Value").Single());
         WPFButtonBase Button_登録 => new WPFButtonBase(_core.LogicalTree().ByType<Button>().Single());
 
-        public EntryWindow_Driver(AppVar core)
+        public 登録_Driver(AppVar core)
         {
             _core = core;
         }
